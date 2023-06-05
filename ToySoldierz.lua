@@ -2,7 +2,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = OrionLib:MakeWindow({
-	Name = "Toy Soliderz",
+	Name = "Toy Soldierz",
 	HidePremium = false,
 	SaveConfig = true,
 	ConfigFolder = "OrionTest",
