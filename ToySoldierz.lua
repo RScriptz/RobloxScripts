@@ -1,3 +1,4 @@
+--Update 1: Added Visual Value Spoofers (Script Made By GamingResources, discord.gg/bugatti)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -78,6 +79,12 @@ local plr = game.Players.LocalPlayer
 local TargetName = plr
 local startTime = tick()
 local elapsedTime = tick() - startTime
+local SpoofBlock = "Polyglass"
+local SpoofSoldier = "Luger"
+local SpoofValue = 9999999
+
+local Blocks = {}
+local Soldiers = {}
 
 local SelectedWave
 local SelectedDifficulty
@@ -85,6 +92,21 @@ local SelectedSaveslot
 local NoRNG
 local SelectedCrate
 local MergingRecipe
+local SpoofBlock
+local SpoofSoldier
+local SpoofValue
+
+for i, v in pairs(game.Players.LocalPlayer.Stats.Blocks:GetChildren()) do
+	if not table.find(Blocks, v.Name) then
+		table.insert(Blocks, v.Name)
+	end
+end
+
+for i, v in pairs(game.Players.LocalPlayer.Stats.Soldiers:GetChildren()) do
+	if not table.find(Soldiers, v.Name) then
+		table.insert(Soldiers, v.Name)
+	end
+end
 
 local function autofarm()
 	game:GetService("ReplicatedStorage"):WaitForChild("ClientServerRemotes"):WaitForChild("LoadBuild"):FireServer(SelectedSaveslot)
@@ -272,6 +294,109 @@ Tab:AddButton({
 	end    
 })
 
+local Tab = Window:MakeTab({
+	Name = "Visuals",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local SpoofBlock
+local SpoofSoldier
+local SpoofValue
+
+local Section = Tab:AddSection({
+	Name = "Settings"
+})
+
+Tab:AddDropdown({
+	Name = "Blocks",
+	Default = "Polyglass",
+	Options = Blocks,
+	Callback = function(Value)
+		SpoofBlock = Value
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "Soldiers",
+	Default = "Luger",
+	Options = Soldiers,
+	Callback = function(Value)
+		SpoofSoldier = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "Visual Value",
+	Default = "9999999",
+	TextDisappear = false,
+	Callback = function(Value)
+		SpoofValue = tonumber(Value)
+	end
+})
+
+local Section = Tab:AddSection({
+	Name = "Building Visuals"
+})
+
+Tab:AddButton({
+	Name = "Spoof Selected Block",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Stats.Blocks[SpoofBlock].Value = SpoofValue
+	end
+})
+
+Tab:AddButton({
+	Name = "Spoof Selected Soldier",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Stats.Soldiers[SpoofSoldier].Value = SpoofValue
+	end
+})
+
+Tab:AddButton({
+	Name = "Spoof All Blocks",
+	Callback = function()
+		for i, v in pairs(game.Players.LocalPlayer.Stats.Blocks:GetChildren()) do
+			v.Value = SpoofValue
+		end
+	end
+})
+
+Tab:AddButton({
+	Name = "Spoof All Soldiers",
+	Callback = function()
+		for i, v in pairs(game.Players.LocalPlayer.Stats.Soldiers:GetChildren()) do
+			v.Value = SpoofValue
+		end
+	end
+})
+
+
+local Section = Tab:AddSection({
+	Name = "Currency Visuals"
+})
+Tab:AddButton({
+	Name = "Spoof Bearz",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Stats.Wealth.Bears.Value = SpoofValue
+	end
+})
+
+Tab:AddButton({
+	Name = "Spoof Event Keys",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Stats.Wealth.EventKeys.Value = SpoofValue
+	end
+})
+
+Tab:AddButton({
+	Name = "Spoof Play Points",
+	Callback = function()
+		for i = 1, 12 do
+			game:GetService("Players").LocalPlayer.Stats.Wealth.TotalPlayPoints.Value = SpoofValue
+			wait(10)
+		end
+	end
+})
 local Tab = Window:MakeTab({
 	Name = "Misc",
 	Icon = "rbxassetid://4483345998",
