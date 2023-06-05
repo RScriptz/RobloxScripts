@@ -1,4 +1,4 @@
---Update 1: Added Visual Value Spoofers (Script Made By GamingResources, discord.gg/bugatti)
+--Update 1: Added Visual Value Spoofers And Anti Afk (Script Made By GamingResources, discord.gg/bugatti)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -122,6 +122,12 @@ local function collectbearz()
 	end
 end
 
+local function antiafk() 
+    for i, v in next, getconnections(game:GetService("Players").LocalPlayer.Idled) do
+      v:Disable()
+    end
+end
+
 local function buycrate()
 	game:GetService("ReplicatedStorage"):WaitForChild("ClientServerRemotes"):WaitForChild("UnlockCrate"):InvokeServer(SelectedCrate, NoRNG)
 end
@@ -190,6 +196,17 @@ Tab:AddToggle({
 		getgenv().Bearz = Value
 		while Bearz and task.wait() do
 			collectbearz()
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Anti Afk",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AntiAfk = Value
+		while AntiAfk and task.wait() do
+			antiafk()
 		end
 	end    
 })
