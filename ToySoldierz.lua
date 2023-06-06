@@ -1,5 +1,5 @@
---Update 1: Added Visual Value Spoofers And Anti Afk (Script Made By GamingResources, discord.gg/bugatti)
---Update 2: Optimized Humanoid State, Made The Delay Between Loading Saveslot And Starting Wave Longer.
+--Update 1: Added Visual Value Spoofers And Anti Afk. (Script Made By GamingResources, 05.05.2023)
+--Update 2: Optimized Humanoid State, Made The Delay Between Loading Saveslot And Starting Wave Longer. (06.06.2023)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
