@@ -1,4 +1,5 @@
 --Update 1: Added Visual Value Spoofers And Anti Afk (Script Made By GamingResources, discord.gg/bugatti)
+--Update 2: Optimized Humanoid State, Made The Delay Between Loading Saveslot And Starting Wave Longer.
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -82,6 +83,8 @@ local elapsedTime = tick() - startTime
 local SpoofBlock = "Polyglass"
 local SpoofSoldier = "Luger"
 local SpoofValue = 9999999
+local State = tostring(game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState())
+local StatePrefix = "Enum.HumanoidStateType."
 
 local Blocks = {}
 local Soldiers = {}
@@ -108,9 +111,16 @@ for i, v in pairs(game.Players.LocalPlayer.Stats.Soldiers:GetChildren()) do
 	end
 end
 
+local function getstate()
+	State = tostring(game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState())
+	if State:find(StatePrefix) == 1 then
+		State = State:sub(#StatePrefix + 1)
+	end
+end
+            
 local function autofarm()
 	game:GetService("ReplicatedStorage"):WaitForChild("ClientServerRemotes"):WaitForChild("LoadBuild"):FireServer(SelectedSaveslot)
-	wait(.5)
+	task.wait(2)
 	game:GetService("ReplicatedStorage"):WaitForChild("ClientServerRemotes"):WaitForChild("StartWave"):FireServer(SelectedWave, SelectedDifficulty)
 end
 
@@ -122,10 +132,10 @@ local function collectbearz()
 	end
 end
 
-local function antiafk() 
-    for i, v in next, getconnections(game:GetService("Players").LocalPlayer.Idled) do
-      v:Disable()
-    end
+local function antiafk()
+	for i, v in next, getconnections(game:GetService("Players").LocalPlayer.Idled) do
+		v:Disable()
+	end
 end
 
 local function buycrate()
@@ -458,48 +468,11 @@ Tab:AddButton({
 				Label7:Set("Position: " .. tostring(math.floor(game:GetService("Players")[tostring(TargetName)].Character.HumanoidRootPart.Position.X)) .. ", " .. tostring(math.floor(game:GetService("Players")[tostring(TargetName)].Character.HumanoidRootPart.Position.Y)) .. ", " .. tostring(math.floor(game:GetService("Players")[tostring(TargetName)].Character.HumanoidRootPart.Position.Z)))
 			end
 		end)
-		local state = game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState()
 		local Label8 = Tab:CreateLabel("Humanoid State: Loading...")
 		spawn(function()
 			while task.wait() do
-				local state = game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState()
-				if state == Enum.HumanoidStateType.Freefall then
-					Label8:Set("Humanoid State: Falling")
-				elseif state == Enum.HumanoidStateType.Running then
-					Label8:Set("Humanoid State: Running")
-				elseif state == Enum.HumanoidStateType.RunningNoPhysics then
-					Label8:Set("Humanoid State: RunningNoPhysics (deprecated)")
-				elseif state == Enum.HumanoidStateType.Climbing then
-					Label8:Set("Humanoid State: Climbing")
-				elseif state == Enum.HumanoidStateType.StrafingNoPhysics then
-					Label8:Set("Humanoid State: StrafingNoPhysics")
-				elseif state == Enum.HumanoidStateType.Ragdoll then
-					Label8:Set("Humanoid State: Ragdoll")
-				elseif state == Enum.HumanoidStateType.GettingUp then
-					Label8:Set("Humanoid State: GettingUp")
-				elseif state == Enum.HumanoidStateType.Jumping then
-					Label8:Set("Humanoid State: Jumping")
-				elseif state == Enum.HumanoidStateType.Landed then
-					Label8:Set("Humanoid State: Landed")
-				elseif state == Enum.HumanoidStateType.Flying then
-					Label8:Set("Humanoid State: Flying")
-				elseif state == Enum.HumanoidStateType.Freefall then
-					Label8:Set("Humanoid State: Freefall")
-				elseif state == Enum.HumanoidStateType.Seated then
-					Label8:Set("Humanoid State: Seated")
-				elseif state == Enum.HumanoidStateType.PlatformStanding then
-					Label8:Set("Humanoid State: PlatformStanding")
-				elseif state == Enum.HumanoidStateType.Dead then
-					Label8:Set("Humanoid State: Dead")
-				elseif state == Enum.HumanoidStateType.Swimming then
-					Label8:Set("Humanoid State: Swimming")
-				elseif state == Enum.HumanoidStateType.Physics then
-					Label8:Set("Humanoid State: Physics")
-				elseif state == Enum.HumanoidStateType.None then
-					Label8:Set("Humanoid State: None")
-				elseif state == Enum.HumanoidStateType.Idle then
-					Label8:Set("Humanoid State: Idle")
-				end
+				getstate()
+				Label8:Set("Humanoid State: " .. tostring(State))
 			end
 		end)
 		local Tab = Window:CreateTab("Placed Items", 4483362458)
