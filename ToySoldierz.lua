@@ -1,5 +1,5 @@
 --Update 1: Added Visual Value Spoofers And Anti Afk. (Script Made By GamingResources, 05.05.2023)
---Update 2: Optimized Humanoid State, Made The Delay Between Loading Saveslot And Starting Wave Longer. (06.06.2023)
+--Update 2: Optimized Humanoid State (Thanks To Hypernova#0721), Made The Delay Between Loading Saveslot And Starting Wave Longer. (06.06.2023)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -83,8 +83,6 @@ local elapsedTime = tick() - startTime
 local SpoofBlock = "Polyglass"
 local SpoofSoldier = "Luger"
 local SpoofValue = 9999999
-local State = tostring(game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState())
-local StatePrefix = "Enum.HumanoidStateType."
 
 local Blocks = {}
 local Soldiers = {}
@@ -110,14 +108,7 @@ for i, v in pairs(game.Players.LocalPlayer.Stats.Soldiers:GetChildren()) do
 		table.insert(Soldiers, v.Name)
 	end
 end
-
-local function getstate()
-	State = tostring(game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState())
-	if State:find(StatePrefix) == 1 then
-		State = State:sub(#StatePrefix + 1)
-	end
-end
-            
+        
 local function autofarm()
 	game:GetService("ReplicatedStorage"):WaitForChild("ClientServerRemotes"):WaitForChild("LoadBuild"):FireServer(SelectedSaveslot)
 	task.wait(2)
@@ -471,8 +462,7 @@ Tab:AddButton({
 		local Label8 = Tab:CreateLabel("Humanoid State: Loading...")
 		spawn(function()
 			while task.wait() do
-				getstate()
-				Label8:Set("Humanoid State: " .. tostring(State))
+				Label8:Set("Humanoid State: " .. tostring(game:GetService("Players")[tostring(TargetName)].Character.Humanoid:GetState()):sub(24)) --Thanks To Hypernova#0721
 			end
 		end)
 		local Tab = Window:CreateTab("Placed Items", 4483362458)
