@@ -1,0 +1,149 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({
+	Name = "Ninja Fighting Simulator",
+	HidePremium = false,
+	SaveConfig = true,
+	ConfigFolder = "OrionTest"
+})
+local eggs = {}
+for i, v in pairs(game:GetService("Workspace").PetPodiums:GetChildren()) do
+	if v.Name ~= "Experienced" and v.Name ~= "Starter" and v.Name ~= "Master" and v.Name ~= "Intermediate" then
+		if not table.find(eggs, tostring(v.Name:gsub("Egg", " Egg"))) then
+			table.insert(eggs, tostring(v.Name:gsub("Egg", " Egg")))
+		end
+	else
+		if not table.find(eggs, tostring(v.Name) .. " Egg") then
+			table.insert(eggs, tostring(v.Name) .. " Egg")
+		end
+	end
+end
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddParagraph("Codes:", "THANKS (Ice Dog Pet)\nMISSING (Missing Ninja Pet)\nGamingDan (Gaming Dan Pet)\nUPDATE (Elephant Ninja Pet)\nSECRET (Shark Ninja Skin)")
+
+local Section = Tab:AddSection({
+	Name = "Quests"
+}) 
+Tab:AddButton({
+	Name = "Complete Lone Wanderer Quest",
+	Callback = function()
+		game:GetService("ReplicatedStorage").Remotes.QuestRemote:InvokeServer("LoneWanderer", "Claim")
+	end    
+})
+
+Tab:AddButton({
+	Name = "Complete Shadow Assasin Quest",
+	Callback = function()
+		game:GetService("ReplicatedStorage").Remotes.QuestRemote:InvokeServer("ShadowAssasin", "Claim")
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Auto Hatch"
+})
+
+local selectedegg 
+Tab:AddDropdown({
+	Name = "Selected Egg",
+	Default = "Starter",
+	Options = eggs,
+	Callback = function(Value)
+		selectedegg = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Auto Hatch",
+	Default = false,
+	Callback = function(Value)
+		getgenv().autohatch = Value
+		while autohatch and wait(.5) do
+			game:GetService("ReplicatedStorage").PetSystem.PurchaseEgg:FireServer(selectedegg, 1, {})
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Teleports"
+})
+
+Tab:AddButton({
+	Name = "Area 1",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Zones.TeleportBackToDojo.To.CFrame
+	end    
+})
+
+Tab:AddButton({
+	Name = "Area 2",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Zones.TeleportToArea2.To.CFrame
+	end    
+})
+
+Tab:AddButton({
+	Name = "Area 3",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Zones.TeleportToArea3.To.CFrame
+	end    
+})
+
+Tab:AddButton({
+	Name = "Area 4",
+	Callback = function()
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Zones.TeleportToArea4.To.CFrame
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Misc"
+})
+
+Tab:AddToggle({
+	Name = "Auto Collect Gifts",
+	Default = false,
+	Callback = function(Value)
+		getgenv().gifts = Value
+		while gifts do
+			for i = 1, 20 do
+				game:GetService("ReplicatedStorage").Remotes.ServerRewards:FireServer(i)
+			end
+			wait(20)
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Auto Win",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+Tab:AddParagraph("NOTE:", "Trying To Fight A Boss With A Lot More Strength Than You Will Cause The Game To Kick You. \nYou Have A 100% Win Chance.")
+
+for i, v in pairs(game:GetService("Workspace").BillboardGuis:GetChildren()) do
+	if v:IsA("Folder") then
+		local area = tostring(v.Name)
+		local Section = Tab:AddSection({
+			Name = tostring(v.Name):gsub("Area", "Area ") .. " Auto Fight"
+		})
+		for i = 1, 5 do
+			Tab:AddToggle({
+				Name = "Fight Boss " .. tostring(i),
+				Default = false,
+				Callback = function(Value)
+					getgenv().autofight = Value
+					while autofight == true do
+						game:GetService("ReplicatedStorage").Remotes.FightOver:FireServer(area, i)
+						wait(3)
+					end
+				end
+			})
+		end
+	end
+end
+OrionLib:Init()
