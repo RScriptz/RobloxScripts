@@ -686,6 +686,14 @@ else
 	local Section = Tab:AddSection({
 		Name = "Others"
 	})
+
+	Tab:AddButton({
+		Name = "Get All Items From Outside",
+		Callback = function()
+			GetAllOutsideItems()
+		end    
+	})
+	
 	Tab:AddToggle({
 		Name = "Auto Claim Uncle Pete Quests",
 		Default = false,
@@ -699,12 +707,6 @@ else
 		end    
 	})
 
-	Tab:AddButton({
-		Name = "Get All Items From Outside",
-		Callback = function()
-			GetAllOutsideItems()
-		end    
-	})
 	Tab:AddToggle({
 		Name = "Hidden Items ESP",
 		Default = false,
