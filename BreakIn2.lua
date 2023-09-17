@@ -1,4 +1,4 @@
-	-- Place Check
+-- Place Check
 if game.PlaceId ~= 13864667823 then
 	if game.PlaceId == 14775231477 or game.PlaceId == 13864661000 then
 		for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
@@ -10,7 +10,7 @@ if game.PlaceId ~= 13864667823 then
 		game:GetService("Players").LocalPlayer:Kick("Error! Game Not Supported!")
 	end
 else
-    -- Floating Part
+    	-- Floating Part
 	local Part = Instance.new("Part")
 	Part.Size = Vector3.new(5, 1, 5)
 	Part.Parent = game:GetService("Workspace")
