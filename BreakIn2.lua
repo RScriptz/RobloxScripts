@@ -292,7 +292,7 @@ else
 	Tab:AddButton({
 		Name = "Teleport To Private Lobby",
 		Callback = function()
-			game:GetService("TeleportService"):Teleport(14775231477, game.Players.LocalPlayer)
+			game:GetService("TeleportService"):Teleport(14775231477, LocalPlayer)
 		end
 	})
 	Tab:AddButton({
