@@ -22,11 +22,15 @@ else
 	local SelectedItem = "Med Kit"
 	local Damange = 5
 	local LocalPlayer = game:GetService("Players").LocalPlayer
+	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
 	local ModifiedWalkspeed = 50
 	local ModifiedJumpPower = 100
-
+	local OriginalBrightness = Lighting.Brightness
+	local OriginalFog = Lighting.FogEnd
+	local OriginalShadow = Lighting.GlobalShadows
+	
 	-- Items Table
 	local ItemsTable = {
 		"Armor",
@@ -47,7 +51,9 @@ else
 		"Apple",
 		"Bloxy Cola",
 		"Expired Bloxy Cola",
-		"Bottle"
+		"Bottle",
+		"Ladder",
+		"Battery"
 	}
 
 	-- Functions
@@ -718,6 +724,22 @@ else
 						v:FindFirstChild("Highlight"):Destroy()
 					end
 				end
+			end
+		end    
+	})
+
+	Tab:AddToggle({
+		Name = "Full Bright",
+		Default = false,
+		Callback = function(Value)
+			if Value == true then
+				Lighting.Brightness = 1
+				Lighting.FogEnd = 999999
+				Lighting.GlobalShadows = false
+			else
+				Lighting.Brightness = OriginalBrightness
+				Lighting.FogEnd = OriginalFog
+				Lighting.GlobalShadows = GlobalShadows
 			end
 		end    
 	})
