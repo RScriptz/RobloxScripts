@@ -746,6 +746,6 @@ else
 		end    
 	})
 
-	Notify('Loaded!', "Script Successfully Loaded!", 'rbxassetid://4483345998', 7)
+	Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.com/invite/XHS5WPxMrr) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!\nWe Will Never Put This Behind A Key System/Paywall, If Someone Did, That Is Not Us!", 'rbxassetid://4483345998', 15)
 	OrionLib:Init()
 end
