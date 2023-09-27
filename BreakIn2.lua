@@ -19,11 +19,10 @@ else
 
 	-- Locals
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
-    local SecretEndingTable = {"HatCollected", "MaskCollected", "CrowbarCollected"}
 	local SelectedItem = "Med Kit"
 	local Damange = 5
 	local namecall
-    local ScriptLoaded = false
+	local ScriptLoaded = false
 	local LocalPlayer = game:GetService("Players").LocalPlayer
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
@@ -33,39 +32,48 @@ else
 	local OriginalBrightness = Lighting.Brightness
 	local OriginalFog = Lighting.FogEnd
 	local OriginalShadow = Lighting.GlobalShadows
-    local HailClone = game:GetService("Workspace").Hails:Clone()
-    getgenv().RemoveSlipping = false
-    getgenv().SemiGodmode = false
+	local HailClone = game:GetService("Workspace").Hails:Clone()
+	getgenv().RemoveSlipping = false
+	getgenv().SemiGodmode = false
 
     -- Remove Slipping Handler
-    local mt = getrawmetatable(game)
-    local old = mt.__namecall
-    setreadonly(mt,false)
-    mt.__namecall = newcclosure(function(self, ...)
-     local args = {...}
-     if getnamecallmethod() == 'FireServer' and self.Name == 'IceSlip' and RemoveSlipping == true then
-     return wait(9e9)
-    end
-     return old(self, unpack(args))
-    end)
+	local mt = getrawmetatable(game)
+	local old = mt.__namecall
+	setreadonly(mt, false)
+	mt.__namecall = newcclosure(function(self, ...)
+		local args = {
+			...
+		}
+		if getnamecallmethod() == 'FireServer' and self.Name == 'IceSlip' and RemoveSlipping == true then
+			return wait(387420489)
+		end
+		return old(self, unpack(args))
+	end)
 
     -- Semi-Godmode Handler
-	namecall = hookmetamethod(game,"__namecall",function(self,...)
-		local args = {...}
+	namecall = hookmetamethod(game, "__namecall", function(self, ...)
+		local args = {
+			...
+		}
 		if getnamecallmethod() == 'FireServer' and self.Name == 'Energy' then
 			if SemiGodmode == true then
 				if args[1] < 0 then
-				args[1] = 0
+					args[1] = 0
 				end
 			else
 				args[1] = args[1]
 			end
-			return namecall(self,unpack(args))
+			return namecall(self, unpack(args))
 		end
-		return namecall(self,...)
+		return namecall(self, ...)
 	end)
 
-	-- Items Table
+	-- Tables
+	local SecretEndingTable = {
+		"HatCollected",
+		"MaskCollected",
+		"CrowbarCollected"
+	}
 	local ItemsTable = {
 		"Armor",
 		"Med Kit",
@@ -132,50 +140,49 @@ else
 	end
 	local function HealYourself()
 		GiveItem("Pizza")
-        Events.Energy:FireServer(25, "Pizza")
+		Events.Energy:FireServer(25, "Pizza")
 	end
-    local function BreakBarricades()
-        for i,v in pairs(game:GetService("Workspace").FallenTrees:GetChildren()) do
-            for i = 1, 20 do
+	local function BreakBarricades()
+		for i, v in pairs(game:GetService("Workspace").FallenTrees:GetChildren()) do
+			for i = 1, 20 do
 				if v:FindFirstChild("TreeHitPart") then
-            Events.RoadMissionEvent:FireServer(1, v.TreeHitPart, 5)
+					Events.RoadMissionEvent:FireServer(1, v.TreeHitPart, 5)
 				end
-            end
-            end
-        end
+			end
+		end
+	end
 	local function BreakEnemies()
 		pcall(function()
-		for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
-			v:FindFirstChild("Humanoid", true).Health = 0
-		end
-		for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
-			v:FindFirstChild("Humanoid", true).Health = 0
-		end
-		for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
-			v:FindFirstChild("Humanoid", true).Health = 0
-		end
-	end)
+			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
+				v:FindFirstChild("Humanoid", true).Health = 0
+			end
+			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
+				v:FindFirstChild("Humanoid", true).Health = 0
+			end
+			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
+				v:FindFirstChild("Humanoid", true).Health = 0
+			end
+		end)
 	end
-
-    local function KillEnemies()
+	local function KillEnemies()
 		pcall(function()
-        for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
-            Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
-        end
-        for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
-            Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
-        end
-        for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
-            Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
-        end
-        if game:GetService("Workspace"):FindFirstChild("BadGuyPizza", true) then
-            Events:WaitForChild("HitBadguy"):FireServer(game:GetService("Workspace"):FindFirstChild("BadGuyPizza", true), 64.8, 4)
-        end
-        if game:GetService("Workspace"):FindFirstChild("BadGuyBrute") then
-            Events:WaitForChild("HitBadguy"):FireServer(game:GetService("Workspace").BadGuyBrute, 64.8, 4)
-        end
-	end)
-    end
+			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
+				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
+			end
+			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
+				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
+			end
+			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
+				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
+			end
+			if game:GetService("Workspace"):FindFirstChild("BadGuyPizza", true) then
+				Events:WaitForChild("HitBadguy"):FireServer(game:GetService("Workspace"):FindFirstChild("BadGuyPizza", true), 64.8, 4)
+			end
+			if game:GetService("Workspace"):FindFirstChild("BadGuyBrute") then
+				Events:WaitForChild("HitBadguy"):FireServer(game:GetService("Workspace").BadGuyBrute, 64.8, 4)
+			end
+		end)
+	end
 
 	local function GetDog()
 		for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
@@ -251,46 +258,43 @@ else
 			end
 		end
 	end
-
-    local function GetSecretEnding()
-        for i,v in next, SecretEndingTable do
-        Events.LarryEndingEvent:FireServer(v, true)
-        end
-    end
+	local function GetSecretEnding()
+		for i, v in next, SecretEndingTable do
+			Events.LarryEndingEvent:FireServer(v, true)
+		end
+	end
 
 	local function GetGAppleBadge()
-		for i,v in pairs(game:GetService("Workspace").FallenTrees:GetChildren()) do
+		for i, v in pairs(game:GetService("Workspace").FallenTrees:GetChildren()) do
 			for i = 1, 20 do
-			if v:FindFirstChild("TreeHitPart") then
-			Events.RoadMissionEvent:FireServer(1, v.TreeHitPart, 5)
+				if v:FindFirstChild("TreeHitPart") then
+					Events.RoadMissionEvent:FireServer(1, v.TreeHitPart, 5)
+				end
 			end
-			end
-			end
-			task.wait(1)
+		end
+		task.wait(1)
 
 		TeleportTo(CFrame.new(61.8781624, 29.4499969, -534.381165, -0.584439218, -1.05103076e-07, 0.811437488, -3.12853778e-08, 1, 1.06993674e-07, -0.811437488, 3.71451705e-08, -0.584439218))
-task.wait(.5)
-fireclickdetector(game:GetService("Workspace").GoldenApple.ClickDetector)
+		task.wait(.5)
+		fireclickdetector(game:GetService("Workspace").GoldenApple.ClickDetector)
 	end
 
 	local function AntiMud(Touchable)
-		for i,v in pairs(game:GetService("Workspace").BogArea.Bog:GetDescendants()) do
+		for i, v in pairs(game:GetService("Workspace").BogArea.Bog:GetDescendants()) do
 			if v.Name == "Mud" and v:IsA("Part") then
 				if Touchable == true then
-			v.CanTouch = false
+					v.CanTouch = false
 				else 
 					v.CanTouch = false
 				end
 			end
-			end
 		end
-		
-
-		local function AntiWind()
-			if game:GetService("Workspace"):FindFirstChild("WavePart") then
-				game:GetService("Workspace").WavePart.CanTouch = false
-				end
-			end
+	end
+	local function AntiWind()
+		if game:GetService("Workspace"):FindFirstChild("WavePart") then
+			game:GetService("Workspace").WavePart.CanTouch = false
+		end
+	end
 	-- Main Script / GUI
 	local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/RScriptz/RobloxScripts/main/OrionLibKeybind.lua')))()
 	local function Notify(name, content, image, time)
@@ -356,9 +360,9 @@ fireclickdetector(game:GetService("Workspace").GoldenApple.ClickDetector)
 	Tab:AddButton({
 		Name = "Heal Yourself",
 		Callback = function()
-            for i = 1, 10 do
-			HealYourself()
-            end
+			for i = 1, 10 do
+				HealYourself()
+			end
 		end
 	})
 	Tab:AddToggle({
@@ -395,38 +399,36 @@ fireclickdetector(game:GetService("Workspace").GoldenApple.ClickDetector)
 	local Section = Tab:AddSection({
 		Name = "Quality Of Life"
 	})
-    Tab:AddToggle({
-        Name = "Semi-Godmode",
-        Default = false,
-        Callback = function(Value)
-        getgenv().SemiGodmode = Value
-		if SemiGodmode == true then
-			Notify('Info', "What Semi-Godmode Works On: Special Attacks (Pizza Boss's Pepper Attack, All Scarry Larry/Marry Attacks Except Monster Spawner), Hailing And Possibly Some Others\nWhat Semi-Godmode Doesnt Work On: Enemies, Ice (Use Anti Slip), Getting Locked In A Room While An Enemy Wave Comes, And Possibly Some Others.", 'rbxassetid://4483345998', 7)
+	Tab:AddToggle({
+		Name = "Semi-Godmode",
+		Default = false,
+		Callback = function(Value)
+			getgenv().SemiGodmode = Value
+			if SemiGodmode == true then
+				Notify('Info', "What Semi-Godmode Works On: Special Attacks (Pizza Boss's Pepper Attack, All Scarry Larry/Marry Attacks Except Monster Spawner), Hailing And Possibly Some Others\nWhat Semi-Godmode Doesnt Work On: Enemies, Ice (Use Anti Slip), Getting Locked In A Room While An Enemy Wave Comes, And Possibly Some Others.", 'rbxassetid://4483345998', 7)
+			end
 		end
-        end
-        })
-
-    Tab:AddToggle({
-        Name = "Remove Slipping",
-        Default = false,
-        Callback = function(Value)
-        getgenv().RemoveSlipping = Value
-        if RemoveSlipping == true then
-            Notify('Credits To', "Leo Dicap On V3rmillion For Making This Feature!", 'rbxassetid://4483345998', 7)
-        end
-        end
-        })
-        
-        Tab:AddToggle({
-            Name = "Remove Hailing",
-            Default = false,
-            Callback = function(Value)
-                if Value == false then
-                    if ScriptLoaded == true then
-                    HailClone.Parent = game:GetService("Workspace")
-                    end
-                else
-                HailClone = game:GetService("Workspace").Hails:Clone()
+	})
+	Tab:AddToggle({
+		Name = "Remove Slipping",
+		Default = false,
+		Callback = function(Value)
+			getgenv().RemoveSlipping = Value
+			if RemoveSlipping == true then
+				Notify('Credits To', "Leo Dicap On V3rmillion For Making This Feature!", 'rbxassetid://4483345998', 7)
+			end
+		end
+	})
+	Tab:AddToggle({
+		Name = "Remove Hailing",
+		Default = false,
+		Callback = function(Value)
+			if Value == false then
+				if ScriptLoaded == true then
+					HailClone.Parent = game:GetService("Workspace")
+				end
+			else
+				HailClone = game:GetService("Workspace").Hails:Clone()
 				game:GetService("Workspace").Hails:Destroy()
 			end
 		end
@@ -441,17 +443,15 @@ fireclickdetector(game:GetService("Workspace").GoldenApple.ClickDetector)
 				AntiWind()
 				task.wait(.5)
 			end
-
-	end
-})
-
-Tab:AddToggle({
-	Name = "Remove Mud",
-	Default = false,
-	Callback = function(Value)
-		AntiMud(Value)
-end
-})
+		end
+	})
+	Tab:AddToggle({
+		Name = "Remove Mud",
+		Default = false,
+		Callback = function(Value)
+			AntiMud(Value)
+		end
+	})
 
 	local Section = Tab:AddSection({
 		Name = "Others"
@@ -462,10 +462,10 @@ end
 			game:GetService("TeleportService"):Teleport(14775231477, LocalPlayer)
 		end
 	})
-    Tab:AddButton({
+	Tab:AddButton({
 		Name = "Unlock Secret Ending",
 		Callback = function()
-            GetSecretEnding()
+			GetSecretEnding()
 		end
 	})
 
@@ -697,22 +697,21 @@ end
 			end
 		end
 	})
-    local Tab = Window:MakeTab({
+	local Tab = Window:MakeTab({
 		Name = "Combat",
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-
-    local Section = Tab:AddSection({
+	local Section = Tab:AddSection({
 		Name = "Kill Enemies"
 	})
 
 	Tab:AddButton({
 		Name = "Kill All Enemies",
 		Callback = function()
-            for i = 1, 10 do
-                KillEnemies()
-            end
+			for i = 1, 10 do
+				KillEnemies()
+			end
 		end
 	})
 
@@ -723,7 +722,7 @@ end
 			getgenv().KillAllLoop = Value
 			while KillAllLoop do
 				for i = 1, 3 do
-                    KillEnemies()
+					KillEnemies()
 				end
 				task.wait(.1)
 			end
@@ -797,23 +796,23 @@ end
 	Tab:AddButton({
 		Name = "Damange Yourself",
 		Callback = function()
-            if SemiGodmode == false then
-			TakeDamange(Damange)
-            else
-                Notify('Warning', "Damanging Yourself Won't Work Due To Having 'Semi Godmode' Enabled!", 'rbxassetid://4483345998', 7)
-            end
+			if SemiGodmode == false then
+				TakeDamange(Damange)
+			else
+				Notify('Warning', "Damanging Yourself Won't Work Due To Having 'Semi Godmode' Enabled!", 'rbxassetid://4483345998', 7)
+			end
 		end
 	})
-    Tab:AddButton({
-        Name = "Slip",
-        Callback = function()
-        if RemoveSlipping == false then
-        Events:WaitForChild("IceSlip"):FireServer(Vector3.new(0, 0, 0))
-        else
-        Notify('Warning', "Slipping Won't Work Due To Having 'Remove Slipping' Enabled!", 'rbxassetid://4483345998', 7)
-        end
-        end
-        })
+	Tab:AddButton({
+		Name = "Slip",
+		Callback = function()
+			if RemoveSlipping == false then
+				Events:WaitForChild("IceSlip"):FireServer(Vector3.new(0, 0, 0))
+			else
+				Notify('Warning', "Slipping Won't Work Due To Having 'Remove Slipping' Enabled!", 'rbxassetid://4483345998', 7)
+			end
+		end
+	})
         
 	local Section = Tab:AddSection({
 		Name = "Tools"
@@ -836,22 +835,22 @@ end
 	Tab:AddButton({
 		Name = "Delete Scary Mary",
 		Callback = function()
-            if game:GetService("Workspace"):FindFirstChild("Villainess") then
-			game:GetService("Workspace").Villainess:Destroy()
-        else
-            Notify('Warning', "Scary Marry Is Already Deleted Or Boss Fight Hasnt Started!", 'rbxassetid://4483345998', 7)
-        end
+			if game:GetService("Workspace"):FindFirstChild("Villainess") then
+				game:GetService("Workspace").Villainess:Destroy()
+			else
+				Notify('Warning', "Scary Marry Is Already Deleted Or Boss Fight Hasnt Started!", 'rbxassetid://4483345998', 7)
+			end
 		end
 	})
 
 	Tab:AddButton({
 		Name = "Delete Scary Larry",
 		Callback = function()
-            if game:GetService("Workspace"):FindFirstChild("BigBoss") then
-			game:GetService("Workspace").BigBoss:Destroy()
-        else
-            Notify('Warning', "Scary Larry Is Already Deleted Or Boss Fight Hasnt Started!", 'rbxassetid://4483345998', 7)
-        end
+			if game:GetService("Workspace"):FindFirstChild("BigBoss") then
+				game:GetService("Workspace").BigBoss:Destroy()
+			else
+				Notify('Warning', "Scary Larry Is Already Deleted Or Boss Fight Hasnt Started!", 'rbxassetid://4483345998', 7)
+			end
 		end
 	})
 
@@ -942,11 +941,10 @@ end
 			GetAllOutsideItems()
 		end    
 	})
-
-    Tab:AddButton({
+	Tab:AddButton({
 		Name = "Break Fallen Trees",
 		Callback = function()
-            BreakBarricades()
+			BreakBarricades()
 		end    
 	})
 
@@ -991,6 +989,6 @@ end
 	})
 
 	Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.com/invite/XHS5WPxMrr) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
-    ScriptLoaded = true
-    OrionLib:Init()
+	ScriptLoaded = true
+	OrionLib:Init()
 end
