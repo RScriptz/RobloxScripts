@@ -251,7 +251,7 @@ end)
 spawn(function()
 	while task.wait(2.5) do
 		if TrickOrTreats == true then
-			SellBubbles()
+			TrickOrTreat()
 		end
 	end
 end)
