@@ -426,7 +426,7 @@ local Dropdown = Tab:CreateDropdown({
 	MultiSelection = false,
 	Flag = "AutoEquipCurrency",
 	Callback = function(Option)
-		EquipStats = tostring(Option)
+		EquipStats = Option
 	end,
 })
 
