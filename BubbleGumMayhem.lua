@@ -167,9 +167,11 @@ local function EquipBestPets(PetStat)
 end
 
 local function FusePets()
-	for i, v in pairs(LocalPlayer.PlayerGui.ScreenGui.PetsFrame.Main.Pages.Pets.List.Grid:GetChildren()) do
-		if v.Name == "PetItem" and v.Locked.Visible == false then
-			RemoteEvent:FireServer("UpgradePetTier", tostring(v.GUID.Value))
+	if LocalPlayer.PlayerGui.ScreenGui:FindFirstChild("PetsFrame") then
+		for i, v in pairs(LocalPlayer.PlayerGui.ScreenGui.PetsFrame.Main.Pages.Pets.List.Grid:GetChildren()) do
+			if v.Name == "PetItem" and v.Locked.Visible == false then
+				RemoteEvent:FireServer("UpgradePetTier", tostring(v.GUID.Value))
+			end
 		end
 	end
 end
