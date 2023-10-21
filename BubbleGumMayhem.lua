@@ -47,7 +47,7 @@ local OriginalJumpPower = Character.Humanoid.JumpPower
 local ModifiedWalkspeed = 50
 local ModifiedJumpPower = 100
 local SelectedEgg       = {"Common Egg"}
-local EquipStats        = "Bubbles"
+local EquipStats        = {"Bubbles"}
 local SpoofedText       = "999999999"
 local SelectedPet       = "None"
 local MultiEggs         = false
@@ -161,7 +161,9 @@ local function CollectChests()
 end
 
 local function EquipBestPets(PetStat)
-	RemoteEvent:FireServer("EquipBest", PetStat)
+	for i,v in pairs(PetStat) do
+		RemoteEvent:FireServer("EquipBest", v)
+	end
 end
 
 local function FusePets()
