@@ -75,7 +75,7 @@ else
 			...
 		}
 		if getnamecallmethod() == 'FireServer' and self.Name == 'IceSlip' and RemoveSlipping == true then
-			return wait(387420489)
+			return task.wait(387420489)
 		end
 		return old(self, unpack(args))
 	end)
